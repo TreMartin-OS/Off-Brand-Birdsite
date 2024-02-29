@@ -22,12 +22,10 @@ and should not just be hardcoded.
 You’ll want to use a library to do this work for you.
 A very popular libary is called Moment.js
  */
-// let postTime = Date($.now());
-// console.log(postTime) // Logs Date + time(24hour format) + Timezone
-// Do I need the time zone? Can I convert the time to 12 hour?
-var dDate = new Date();
-var time = dDate.getHours() + ":" + dDate.getMinutes() + ":" + dDate.getSeconds();
-console.log('Time: ', time)
+let callTime = moment().calendar(); // Exact time post was made
+let pastTime = moment().startOf(callTime).fromNow(); // How much time has passed since posted
+console.log('Moment time: ', pastTime + ': ' + callTime); // Logs what I want!!!
+
 
 //------------------------
     $tweet.text(text); // Adds combo username + msg var to the individual divs
