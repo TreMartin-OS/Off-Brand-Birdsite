@@ -1,20 +1,52 @@
 
 $(document).ready(() => {
-  const $body = $('body'); // she says using .html('') clears an element. So this will erase any tweets added to the body, which is why she says make a new div to add tweets to instead.
-  $body.html('');
+  const $body = $('body'); 
+  $body.html(''); // Using .html('') clears an element. So this erases any tweets added to the body, which is why we're meant make a new div to add tweets to instead.
+// Everytime I refresh LS, an entire new set of Tweets appears. This is intended, I think.
 
-  const $tweetsDiv = $("<div id=tweets></div>")
-  $body.append($tweetsDiv);
+  const $tweetsDiv = $("<div id=tweets></div>") // Create div that tweets will appear in so they dont vanish when body is cleared
+  $body.append($tweetsDiv); // This adds the Tweets div into the body
 
-  const $tweets = streams.home.map((tweet) => { // What does this do?
-    const $tweet = $('<div></div>'); // Creates a div for each individual tweet
-    const text = `@${tweet.user}: ${tweet.message}`;
+  // Wrapping this in a func so I can set a timer to call it every few seconds
+  function futureFunc() {
+  // Below is NOT a func: Var thats the result of mapping
+  const $tweets = streams.home.map((tweet) => { // Generates a set number of new tweets
+    const $tweet = $('<div></div>'); // Creates a div for each individual new tweet
+    const text = `@${tweet.user}: ${tweet.message}`; // Combines username with the message into 1 var
+//-------------------------
+/**
+- Display the timestamps of when the tweets were created.
+This timestamp should reflect the actual time the tweets were created, 
+and should not just be hardcoded.
+- Show when the tweets were created in a human-friendly way (eg “10 minutes ago”).
+You’ll want to use a library to do this work for you.
+A very popular libary is called Moment.js
+ */
+// let postTime = Date($.now());
+// console.log(postTime) // Logs Date + time(24hour format) + Timezone
+// Do I need the time zone? Can I convert the time to 12 hour?
+var dDate = new Date();
+var time = dDate.getHours() + ":" + dDate.getMinutes() + ":" + dDate.getSeconds();
+console.log('Time: ', time)
 
-    $tweet.text(text);
+//------------------------
+    $tweet.text(text); // Adds combo username + msg var to the individual divs
 
-    return $tweet;
+    return $tweet; // returns div contain UN + Msg
   });
-  $tweetsDiv.append($tweets);
+  $tweetsDiv.append($tweets); // NOT A FUNC: Adds 16 tweets at a time to tweetsDiv
+}
+
+  // I want a Func Call to add tweets automatically: 1000 milSecs = 1 sec
+  let addTweets = setInterval(futureFunc, 2000); // Despite the EXs I found showing the () or "" where needed, it only works when just the func name is present
+  // Auto showing these may be a bad idea, the page gets ridiculously longafter a while
+  // Isnt there a way to stop it?
+  // W3Schools says:
+  function stopTweetTimer(){ // If you dont put it in a func, it'll stop them immediately
+    clearInterval(addTweets); // This will stop the adding process
+  }
+  setInterval(stopTweetTimer, 6000); // This stops the adding process after 6 secs to keep page from flooding
+
 
 });
 
