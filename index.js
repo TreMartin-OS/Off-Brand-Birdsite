@@ -1,4 +1,3 @@
-
 $(document).ready(() => {
   const $body = $('body'); 
   $body.html(''); // Using .html('') clears an element. So this erases any tweets added to the body, which is why we're meant make a new div to add tweets to instead.
@@ -9,30 +8,34 @@ $(document).ready(() => {
 
   // Wrapping this in a func so I can set a timer to call it every few seconds
   function futureFunc() {
-  // Below is NOT a func: Var thats the result of mapping
-  const $tweets = streams.home.map((tweet) => { // Generates a set number of new tweets
-    const $tweet = $('<div></div>'); // Creates a div for each individual new tweet
+    // Create Tweet Start ----------------------
+    // Below is NOT a func: Var thats the result of mapping
+    const $tweets = streams.home.map((tweet) => { // Generates a set number of new tweets
+      const $tweet = $('<div></div>'); // Creates a div for each individual new tweet
+    // const text = `@${tweet.user}: ${tweet.message}`; // OG: Combines username with the message into a String & assigns it to a var
+    const text = `: ${tweet.message}`; // Change to just the msg? Where to add username link?
+    
+    $tweet.text(text); // Adds combo username + msg var to the individual divs
+// Create Tweet End -----------------------------
+    
     // Make Username Clickable Start ----------------------------------
-    // How do I select the usernames?  `@${tweet.user} on line 15 is a clue maybe?
-    // Clicking it should show the users timeline, meaning only their posts (I think) where are those?
+    // -Clicking it should show the users timeline, meaning only their posts (I think) where are those?
     // streams.users has an array of the usernames. Are these their timelines?
-    let $uNSelect = tweet.user
+    // let $uNSelect = tweet.user // Do I not need this?
     // console.log(uNSelect) // This logs the usernames
-    // Do I need to make a new Username div, or am I meant to modify the one that already exists?
-    // Making a tag set for now until someone answers my question.
+    // Make a new Div for turning the UN into a link
     let $unLink = $('<a>'); // Create new anchor element/tag
     // Make the href attribute link to the users page (use google till I can figure that out)
-    $unLink.attr("href", "https://www.google.com/");
+    // $unLink.attr("href", "https://www.google.com/"); // Test line that works
+    $unLink.attr("href", streams.users + tweet.user);
     // Set the link text between the 'a' tags
-    $unLink.text(tweet.user)
+    $unLink.text(`@${tweet.user}`)
+    // Add the linked username to the front of the tweet div
+    $tweet.prepend($unLink);
+    
     // move this block above the const text just in case
     // Make Username Clickable End ----------------------------------
-
-    const text = `@${tweet.user}: ${tweet.message}`; // Testing
-    // const text = `@${tweet.user}: ${tweet.message}`; // OG: Combines username with the message into a String & assigns it to a var
-    console.log(typeof text) // Ok the lil tics are making this a text string only
-
-    $tweet.text(text); // Adds combo username + msg var to the individual divs
+    
 
 // Timestamp Creation Start-------------------------
 /**
@@ -56,15 +59,16 @@ $timeStampDiv.text(tweetStamp);
 $tweet.append($timeStampDiv)
 // Timestamp Creation End------------------------
 
-
     return $tweet; // returns 2 divs: 1 contains UN + Msg, the 2nd has the timeStamp
   });
   $tweetsDiv.append($tweets); // NOT A FUNC: Adds 16 tweets (and their timestamps) at a time to tweetsDiv
 }
+
+
 // Show Tweets start ---------------------------------------------------
 // Show the user new tweets somehow. (You can show them automatically as they’re created, or create a button that displays new tweets.)
 // I want a Func Call to add tweets automatically: 1000 milSecs = 1 sec
-  let addTweets = setInterval(futureFunc, 2000); // Despite the EXs I found showing the () or "" where needed, it only works when just the func name is present
+  let addTweets = setInterval(futureFunc, 1000); // Despite the EXs I found showing the () or "" where needed, it only works when just the func name is present
   // Auto showing these may be a bad idea, the page gets ridiculously longafter a while
   // Isnt there a way to stop it?
   // W3Schools says:
