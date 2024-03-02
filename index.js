@@ -1,84 +1,100 @@
 $(document).ready(() => {
   const $body = $('body'); 
-  $body.html(''); // Using .html('') clears an element. So this erases any tweets added to the body, which is why we're meant make a new div to add tweets to instead.
-// Everytime I refresh LS, an entire new set of Tweets appears. This is intended, I think.
+  $body.html(''); // Using <element tag>.html('') clears an element. Everytime I refresh teh LiveServer page, this erases any tweets added to the body, which is why we have to make a new div to append tweets to instead.
 
-  const $tweetsDiv = $("<div id=tweets></div>") // Create div that tweets will appear in so they dont vanish when body is cleared
+  const $tweetsDiv = $('<div id="tweets"></div>') // Create div that tweets will appear in so they dont vanish when body is cleared
   $body.append($tweetsDiv); // This adds the Tweets div into the body
+  let $unLink = $('<div id="nameClick" ></div>'); // Defining here so its accessible by the Click event // Moving the whole div out here makes the UN vanish 
+  let $itsYou = null; // Will be reassigned to username you click
 
-  // Wrapping this in a func so I can set a timer to call it every few seconds
-  function futureFunc() {
+  function futureFunc() { // fF Start -------------------------------------------
+
     // Create Tweet Start ----------------------
-    // Below is NOT a func: Var thats the result of mapping
-    const $tweets = streams.home.map((tweet) => { // Generates a set number of new tweets
+    // Below is a func: a Var thats the result of mapping
+    const $tweets = streams.home.map((tweet) => { // OG code:
       const $tweet = $('<div></div>'); // Creates a div for each individual new tweet
     // const text = `@${tweet.user}: ${tweet.message}`; // OG: Combines username with the message into a String & assigns it to a var
-    const text = `: ${tweet.message}`; // Change to just the msg? Where to add username link?
-    
-    $tweet.text(text); // Adds combo username + msg var to the individual divs
+    const text = `: ${tweet.message}`; // Changed to just the msg text, adding UN as a new div in front of this
+        $tweet.text(text); // Adds msg var to the tweet div
 // Create Tweet End -----------------------------
     
-    // Make Username Clickable Start ----------------------------------
+    // Make Username Div Start ----------------------------------
     // -Clicking it should show the users timeline, meaning only their posts (I think) where are those?
-    // streams.users has an array of the usernames. Are these their timelines?
-    // let $uNSelect = tweet.user // Do I not need this?
-    // console.log(uNSelect) // This logs the usernames
-    // Make a new Div for turning the UN into a link
-    let $unLink = $('<a>'); // Create new anchor element/tag
-    // Make the href attribute link to the users page (use google till I can figure that out)
-    // $unLink.attr("href", "https://www.google.com/"); // Test line that works
-    $unLink.attr("href", streams.users + tweet.user);
-    // Set the link text between the 'a' tags
+    // Reassigning this instead of defining it here so a later click even will work
+    $unLink = $('<div id="nameClick" ></div>'); // new UN div // Moving this outside Func too just in case it works
+    // Set the UN text inside the 'div' tag
     $unLink.text(`@${tweet.user}`)
-    // Add the linked username to the front of the tweet div
+    // Add the UN to the front of the tweet div
     $tweet.prepend($unLink);
-    
-    // move this block above the const text just in case
-    // Make Username Clickable End ----------------------------------
-    
+
+// Make Username Div End ----------------------------------
 
 // Timestamp Creation Start-------------------------
-/**
-- Display the timestamps of when the tweets were created.
-This timestamp should reflect the actual time the tweets were created, 
-and should not just be hardcoded.
-- Show when the tweets were created in a human-friendly way (eg “10 minutes ago”).
-You’ll want to use a library to do this work for you.
-A very popular libary is called Moment.js
- */
+// Display the timestamps of when the tweets were created in a human-friendly way (eg “10 minutes ago”).
+// Use library called Moment.js
+
 // Create timestamp div
 let $timeStampDiv = $('<div></div>'); // Makes a div to put the timestamps in
 let callTime = moment().calendar(); // Exact time post was made
 let pastTime = moment().startOf(callTime).fromNow(); // How much time has passed since posted
 // console.log('Moment time: ', pastTime + ': ' + callTime); // Logs what I want!!!
 let tweetStamp = pastTime + ': ' + callTime;
-// console.log(tweetStamp)
-// Adds the time var to the div I made for the full time stamp
+// Adds the time var to the div I made for the combined time stamp
 $timeStampDiv.text(tweetStamp);
 // Adds the timeStamp div to the tweet div 
 $tweet.append($timeStampDiv)
 // Timestamp Creation End------------------------
 
-    return $tweet; // returns 2 divs: 1 contains UN + Msg, the 2nd has the timeStamp
-  });
-  $tweetsDiv.append($tweets); // NOT A FUNC: Adds 16 tweets (and their timestamps) at a time to tweetsDiv
-}
+    return $tweet; // returns 3 divs: 1 contains UN, 1 the Msg, last the timeStamp
+  }
+  
+  );
+  $tweetsDiv.append($tweets); // Adds 1 div containing 3 divs: UNs, tweets, & timestamps to tweetsDiv
+
+} // fF End --------------------------------------------------------------
+
 
 
 // Show Tweets start ---------------------------------------------------
-// Show the user new tweets somehow. (You can show them automatically as they’re created, or create a button that displays new tweets.)
+// Show the user new tweets: automatically or manually (button).
 // I want a Func Call to add tweets automatically: 1000 milSecs = 1 sec
-  let addTweets = setInterval(futureFunc, 1000); // Despite the EXs I found showing the () or "" where needed, it only works when just the func name is present
-  // Auto showing these may be a bad idea, the page gets ridiculously longafter a while
-  // Isnt there a way to stop it?
-  // W3Schools says:
-  function stopTweetTimer(){ // If you dont put it in a func, it'll stop them immediately
-    clearInterval(addTweets); // This will stop the adding process
-  }
-  setInterval(stopTweetTimer, 6000); // This stops the adding process after 6 secs to keep page from flooding
+let addTweets = setInterval(futureFunc, 1000); // Despite the EXs I found showing the () or "" where needed, it only works when just the func name is present
+// Auto showing these is a bad idea, the page gets ridiculously long
+// W3Schools says this will stop it:
+function stopTweetTimer(){ // If you dont put it in a func, it'll stop them immediately
+  clearInterval(addTweets); // This will stop the adding process
+}
+setInterval(stopTweetTimer, 6000); // This stops the adding process after 6 secs to keep page from flooding
 // Show Tweets End -----------------------------------------------------
 
+
+// 1 Users tweets func start ------------------------------------------------
+// on-click event to call the tweet generating function
+// $( "#target" ).on( "click", function() { // OG version
+$(".nameClick").on( "click", function() { // I can't access unlink here
+  // Clear the Tweet feed
+$tweetsDiv.html(''); 
+console.log("Is This working?");
+
+// reassign $itsYou to name that was clicked
+// $itsYou = $unLink.text(`@${tweet.user}`) // ??
+// console.log($itsYou)
+
+// append result of calling just that one users tweets
+// SO give fF an Optional param & call it with $itsYou
+// futureFunc($itsYou)
+// If I just have to call fF with a param, it should return/append for me, right?
+
 });
+// 1 Users tweets func end ------------------------------------------------
+
+
+
+
+}); // End of Document function
+
+
+
 
   /**
    * Above code only gets the first 10 generated tweets. We have to edit the above code EXCEPT FOR the document ready line.
