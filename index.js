@@ -51,6 +51,9 @@ $tweet.append($timeStampDiv)
   );
   $tweetsDiv.append($tweets); // Adds 1 div containing 3 divs: UNs, tweets, & timestamps to tweetsDiv
 
+
+
+
 } // fF End --------------------------------------------------------------
 
 
@@ -68,13 +71,27 @@ setInterval(stopTweetTimer, 6000); // This stops the adding process after 6 secs
 // Show Tweets End -----------------------------------------------------
 
 
+// Hover highlight just to verify div selection ----------------------------------
+$body.on({
+  mouseenter: function() {
+      $(this).css("background-color", "lavender");
+  },
+  mouseleave: function() {
+      $(this).css("background-color", "transparent");
+  }
+}, "#nameClick");
+// Hover highlight End -----------------------------------------------------------
+
+
 // 1 Users tweets func start ------------------------------------------------
 // on-click event to call the tweet generating function
 // $( "#target" ).on( "click", function() { // OG version
-$(".nameClick").on( "click", function() { // I can't access unlink here
+$body.on("click", "#nameClick", function() { // I need this to work when I click a username
+  // $itsYou = $(this).text().substring(1); // reassigns $itsYou to string of the clicked username without @ sign
+  $itsYou = $(this).text(); // UN with the at sign 
   // Clear the Tweet feed
 $tweetsDiv.html(''); 
-console.log("Is This working?");
+console.log($itsYou);
 
 // reassign $itsYou to name that was clicked
 // $itsYou = $unLink.text(`@${tweet.user}`) // ??
