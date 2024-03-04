@@ -14,10 +14,34 @@ $(document).ready(() => {
   // Add button to the top of the Page
   $body.prepend($lButton); 
 
-    // Define the UserName link div here so its accessible by the Click event later
+   // Define the UserName link div here so its accessible by the Click event later
   let $unLink = $('<div id="nameClick" ></div>'); 
   // This will be reassigned to the username you click in the Click event
   let $itsYou = null; 
+
+// Input Start -----------------------------------------------------------------------------
+// Geeks for Geeks input boxes: https://www.geeksforgeeks.org/jquery-set-the-value-of-an-input-text-field/
+// Create Input box for Username
+let $nameBox = $('<input id="unBox"></input>').attr({ type: 'text'})
+// Create a label for it
+let $nbLabel = $("<label></label>").text("Username: ");
+// Add the label in front of the box
+$nbLabel.append($nameBox);
+// Attach UN box + label to: body?
+$body.prepend($nbLabel); 
+
+// Create Input box for message
+let $msgBox = $('<input id="mBox"></input>').attr({ type: 'text'})
+// Create a label for it
+let $msgLabel = $("<label></label>").text("Message: ");
+// Add the label in front of the box
+$msgLabel.append($msgBox);
+// Attach UN box + label to: body?
+$body.prepend($msgLabel); 
+
+// I want the "Show more posts" button & the message boxes on diff lines, how do I accomplish that?
+
+// Input End -------------------------------------------------------------------------------
 
 
   function futureFunc(optionalUN) { // fF Start -------------------------------------------
