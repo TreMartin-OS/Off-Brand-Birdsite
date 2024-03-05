@@ -5,7 +5,7 @@ $(document).ready(() => {
   $body.html(''); 
 
   // Create a div that tweets will be attached to so they dont vanish when body is cleared
-  const $tweetsDiv = $('<div id="tweets"></div>') 
+  const $tweetsDiv = $('<div id="tweetsDiv"></div>') 
   // Add the Tweets div to the Body
     $body.append($tweetsDiv); 
 
@@ -70,7 +70,7 @@ $("#topDiv:nth-child(1)").append($msgLabel);
     // const $tweets = streams.home.map((tweet) => { // OG version
     const $tweets = whatToMap.map((tweet) => { // Altered to fit assignment
       // Creates a div for each individual new tweet
-      const $tweet = $('<div></div>'); 
+      const $tweet = $('<div id="tweet" ></div>'); 
     // const text = `@${tweet.user}: ${tweet.message}`; // OG: Combines username with the message into a String & assigns it to a var
     // Changed OG version to just the msg text, adding UN as a new div in front of this
     const text = `: ${tweet.message}`; 
@@ -127,7 +127,7 @@ $lButton.on("click", function() {futureFunc()});
 // Move this to CSS?
 $body.on({
   mouseenter: function() {
-      $(this).css("background-color", "lavender");
+      $(this).css("background-color", "#7CB9E8");
   },
   mouseleave: function() {
       $(this).css("background-color", "transparent");
@@ -175,9 +175,22 @@ streams.users[visitor] = [];
 // Call futureFunc() to add the tweet to the div
   futureFunc(visitor);
 });
-
-
-
 // New tweets func end ------------------------------------------------
+
+// CSS Start ----------------------------------------------------------
+// margin: auto; width: 50%; border: 3px solid green; padding: 10px;
+$('body').css({"width": "70%", "margin": "auto", "background-color": "#002244", "border-style": "dotted dashed solid double", "border-width": "20px", "border-color": "#00538C"})
+$tweetsDiv.css({"width": "80%", "margin": "auto", "background-color": "white", "padding": "5%", "border-radius": "5px", "text-align": "left", "font-family": "Arial", "font-size": "20px"})
+$topDiv.css({"width": "80%", "margin": "auto", "background-color": "white", "padding": "5%", "border-radius": "5px"});
+$lButton.css({"width": "50%", "margin-left": "25%"}).after("<br />")
+$nbLabel.css({"margin-left": "5%", "font-family": "Arial"}).after("<br />")
+$nameBox.css({"width": "90%", "margin": "auto"})
+$msgLabel.css({"margin-left": "5%", "font-family": "Arial"}).after("<br />")
+$msgBox.css({"width": "90%", "margin": "auto"})
+$pButton.css({"width": "50%", "margin-left": "25%"})
+// $tweets.css({"background-color": "navy"}); // Wont work, why?
+// 
+// CSS End ----------------------------------------------------------
+
 
 }); // End of Document function
