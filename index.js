@@ -108,8 +108,8 @@ $tweet.append($timeStampDiv)
 // returns 3 divs: 1 contains UN link, 1 is the Msg, last the timeStamp
     return $tweet; 
   });
-  // Adds combined tweet divs to tweetsDiv
-  $tweetsDiv.append($tweets); 
+  // Adds combined tweet divs to front of tweetsDiv
+  $tweetsDiv.prepend($tweets); 
 
 } // fF End --------------------------------------------------------------
 
@@ -157,17 +157,23 @@ $body.on("click", "#pButton", function() { // ,= This works
   // console.log(visitor); // WORKING
 // add username to the streams object
 streams.users[visitor] = [];
-console.log(streams.users)
+// console.log(streams.users) // Shows that new user is getting added to the streams
 
   $urMSG = $("#mBox").val().toString();
   // console.log(typeof $urMSG); // WORKING??
 
   // Call writeTweet with the something as the message argument
-  let $sTweets = writeTweet($urMSG)
-  // console.log(testing); // NOT WORKING!! D=
+  let $sTweets = writeTweet($urMSG) // <= This is just adding it to the obj
+  // console.log($sTweets); // Shows them in the object
+
+// How do I get them to display? Does futureFunc need to be called again for this?
+// let $postEm = futureFunc(visitor)
+// console.log($postEm); // Posting to the page but stil returning undefined in the console
+// Its adding them to the top now
+futureFunc(visitor)
 
   // Add new user tweet to the top of the div
-  $tweetsDiv.prepend($sTweets)
+  // $tweetsDiv.prepend($sTweets)
 
 });
 
