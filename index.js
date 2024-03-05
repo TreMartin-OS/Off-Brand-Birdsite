@@ -9,10 +9,15 @@ $(document).ready(() => {
   // Add the Tweets div to the Body
     $body.append($tweetsDiv); 
 
+// Create a Div ABOVE the tweets div to add buttons & new Post elements to
+let $topDiv = $('<div id="topDiv"></div>')
+// Add this to the top of the body using prepend
+  $body.prepend($topDiv);
+
   // Create a button that will be used to load new posts
   let $lButton = $('<button id="lButton">Show More Posts</button>');
-  // Add button to the top of the Page
-  $body.prepend($lButton); 
+  // Add button to the topDiv
+  $topDiv.prepend($lButton); 
 
    // Define the UserName link div here so its accessible by the Click event later
   let $unLink = $('<div id="nameClick" ></div>'); 
@@ -20,15 +25,16 @@ $(document).ready(() => {
   let $itsYou = null; 
 
 // Input Start -----------------------------------------------------------------------------
-// Geeks for Geeks input boxes: https://www.geeksforgeeks.org/jquery-set-the-value-of-an-input-text-field/
+// Show more Posts button is adding tweets above the new post section
+
 // Create Input box for Username
 let $nameBox = $('<input id="unBox"></input>').attr({ type: 'text'})
 // Create a label for it
 let $nbLabel = $("<label></label>").text("Username: ");
 // Add the label in front of the box
 $nbLabel.append($nameBox);
-// Attach UN box + label to: body?
-$body.prepend($nbLabel); 
+// Attach UN box + label to: body under the Show More Posts button
+$("#topDiv:nth-child(1)").append($nbLabel); 
 
 // Create Input box for message
 let $msgBox = $('<input id="mBox"></input>').attr({ type: 'text'})
@@ -36,11 +42,14 @@ let $msgBox = $('<input id="mBox"></input>').attr({ type: 'text'})
 let $msgLabel = $("<label></label>").text("Message: ");
 // Add the label in front of the box
 $msgLabel.append($msgBox);
-// Attach UN box + label to: body?
-$body.prepend($msgLabel); 
+// Attach UN box + label to: body under the Show More Posts button
+$("#topDiv:nth-child(1)").append($msgLabel); 
 
-// I want the "Show more posts" button & the message boxes on diff lines, how do I accomplish that?
-
+// Create a button that will be used to add a new post to the top of the list
+  let $pButton = $('<button id="pButton">Submit Post</button>');
+  // Add button under the text input fields
+  $("#topDiv:nth-child(1)").append($pButton);
+// Create new onclick at the bottom of the code
 // Input End -------------------------------------------------------------------------------
 
 
@@ -126,7 +135,7 @@ $body.on({
 // Hover highlight End -----------------------------------------------------------
 
 
-// 1 Users tweets func start ------------------------------------------------
+// Generated tweets func start ------------------------------------------------
 // on-click event to call the tweet generating function
 // $( "#target" ).on( "click", function() { // OG version that did NOT work
 $body.on("click", "#nameClick", function() { // ,= This works
@@ -136,8 +145,34 @@ $body.on("click", "#nameClick", function() { // ,= This works
   $tweetsDiv.html(''); 
   // ReCall futureFunc with the $itsYou argument
   futureFunc($itsYou);
+});
+// Generated tweets func end ------------------------------------------------
+
+
+// New tweets func start ------------------------------------------------
+$body.on("click", "#pButton", function() { // ,= This works
+  // reassigns $urName & $urMSG to context of their respective input boxes
+  // assigning the (required) global visitor var to the value entered in unBox
+  visitor = $("#unBox").val(); 
+  // console.log(visitor); // WORKING
+// add username to the streams object
+streams.users[visitor] = [];
+console.log(streams.users)
+
+  $urMSG = $("#mBox").val().toString();
+  // console.log(typeof $urMSG); // WORKING??
+
+  // Call writeTweet with the something as the message argument
+  let $sTweets = writeTweet($urMSG)
+  // console.log(testing); // NOT WORKING!! D=
+
+  // Add new user tweet to the top of the div
+  $tweetsDiv.prepend($sTweets)
 
 });
-// 1 Users tweets func end ------------------------------------------------
+
+
+
+// New tweets func end ------------------------------------------------
 
 }); // End of Document function
