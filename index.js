@@ -76,6 +76,7 @@ $("#topDiv:nth-child(1)").append($msgLabel);
     const text = `: ${tweet.message}`; 
     // Adds msg var to the tweet div
         $tweet.text(text); 
+        // console.log(tweet)
 // Create Tweet End -----------------------------
     
 // Make Username Div Start ----------------------------------
@@ -107,10 +108,10 @@ $tweet.append($timeStampDiv)
 
 // returns 3 divs: 1 contains UN link, 1 is the Msg, last the timeStamp
     return $tweet; 
+    // return $tweets; // temp change
   });
   // Adds combined tweet divs to front of tweetsDiv
-  $tweetsDiv.prepend($tweets); 
-
+  $tweetsDiv.prepend($tweets); // temp hide
 } // fF End --------------------------------------------------------------
 
 
@@ -151,30 +152,28 @@ $body.on("click", "#nameClick", function() { // ,= This works
 
 // New tweets func start ------------------------------------------------
 $body.on("click", "#pButton", function() { // ,= This works
-  // reassigns $urName & $urMSG to context of their respective input boxes
-  // assigning the (required) global visitor var to the value entered in unBox
+
+// CHECK if its been assigned by a previous click or not:
+if (typeof visitor === "undefined") {
+  // Assign the global visitor var to the value entered in unBox
   visitor = $("#unBox").val(); 
-  // console.log(visitor); // WORKING
 // add username to the streams object
 streams.users[visitor] = [];
-// console.log(streams.users) // Shows that new user is getting added to the streams
+}
 
+// 
   $urMSG = $("#mBox").val().toString();
-  // console.log(typeof $urMSG); // WORKING??
+  // Call writeTweet with the message as the argument argument
+  writeTweet($urMSG);
 
-  // Call writeTweet with the something as the message argument
-  let $sTweets = writeTweet($urMSG) // <= This is just adding it to the obj
-  // console.log($sTweets); // Shows them in the object
+  // Clears the Tweet feed
+  $tweetsDiv.html(''); // This clears the feed and appears to only add 1 post at a time
+  // but its actually just clearing teh feed an adding the entire visitor post history
+  // Showing new posts then clicking to add is not working togehter.
+  // HOW do I fix this?
 
-// How do I get them to display? Does futureFunc need to be called again for this?
-// let $postEm = futureFunc(visitor)
-// console.log($postEm); // Posting to the page but stil returning undefined in the console
-// Its adding them to the top now
-futureFunc(visitor)
-
-  // Add new user tweet to the top of the div
-  // $tweetsDiv.prepend($sTweets)
-
+// Call futureFunc() to add the tweet to the div
+  futureFunc(visitor);
 });
 
 
