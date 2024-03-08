@@ -144,7 +144,6 @@ $(document).ready(() => {
       $unLink = $('<div id="nameClick" ></div>');
       // CSS only works here, not below. BUT
       $unLink.css({ "font-size": "15px" });
-      $unLink.append(':')
       // Set the UN text inside the 'div' tag
       $unLink.text(`@${tweet.user}`) // Adding : here broke a lot of code
       // Add the UN to the front of the tweet div
