@@ -73,8 +73,8 @@ $(document).ready(() => {
     else {
       // Assign wTM to this to make sure the randomizer doesnt include tweets made by your visitor
       // And that it doesnt pull every tweet ever made to repost
-      whatToMap = streams.home.filter(function(tweet) {return tweet.user !== optionalUN;}).slice(-3);
-      // I finally figure out how to choose how many random posts get pulled!!! Hooray!!!
+      whatToMap = streams.home.filter(function(tweet) {return tweet.user !== optionalUN;}).slice(-(Math.floor(Math.random() * (6 - 3 + 1)) + 3));
+      // I finally figure out how to choose how many random posts get pulled!!! Hooray!!!  Thank you free code camp!!!
   }
 
   // Create Tweet Start ----------------------
@@ -88,7 +88,6 @@ $(document).ready(() => {
     const text = `: ${tweet.message}`;
     // Adds msg var to the tweet div
     $tweet.text(text);
-    // console.log(tweet)
     // Create Tweet End -----------------------------
 
     // Make Username Div Start ----------------------------------
@@ -126,15 +125,6 @@ $(document).ready(() => {
   $tweetsDiv.prepend($tweets); // temp hide
 } // fF End --------------------------------------------------------------
 
-
-// Show Tweets New start -----------------------------------------------------------------
-// Click button to load more tweets
-$lButton.on("click", function () { futureFunc() });
-// Click functions exist but it didnt work when I used it
-// $lButton.on("click", futureFunc); Should have worked but didnt for some reason
-// Show Tweets  End -----------------------------------------------------
-
-
 // Hover highlight to show UN div selection ----------------------------------
 // Move this to CSS?
 $body.on({
@@ -148,46 +138,56 @@ $body.on({
 // Hover highlight End -----------------------------------------------------------
 
 
-// Generated tweets func start ------------------------------------------------
-// on-click event to call the tweet generating function
-// $( "#target" ).on( "click", function() { // OG version that did NOT work
-$body.on("click", "#nameClick", function () { // ,= This works
+
+// Generate & Show New Tweets start -----------------------------------------------------------------
+// Click button to load more tweets
+$lButton.on("click", function () { 
+  // Calling this before fF because it was just pulling from a list of old tweets & still mixing in Visitor ones even tho I told it to exclude them
+  generateRandomTweet();
+  // NOW calling fF should add only new tweets to the top of the feed
+  futureFunc();
+});
+// Click functions exist but it didnt work when I used it
+// $lButton.on("click", futureFunc); Should have worked but didnt for some reason
+// Generate & Show New Tweets End -----------------------------------------------------
+
+// Show only this users tweets Start ------------------------------------------------
+// Create On click event for clicking a username
+$body.on("click", "#nameClick", function () {
   // reassigns $itsYou to string of the clicked username without @ sign
   $itsYou = $(this).text().substring(1);
   // Clears the Tweet feed
-  // $tweetsDiv.html(''); // Does this actually need ot be cleared?
+  $tweetsDiv.html(''); //This HAS to be cleared so you only see their Tweets
   // ReCall futureFunc with the $itsYou argument
   futureFunc($itsYou);
+  // Because of changes made to futureFunc, its only showing the single tweet you clicked riht now
 });
-// Generated tweets func end ------------------------------------------------
+// Show only this users tweets end ------------------------------------------------
 
 
-// New tweets func start ------------------------------------------------
-$body.on("click", "#pButton", function () { // ,= This works
+// Visitor Creation tweets start ------------------------------------------------
+// Create an on function that responds to a click (.onClick didnt let me pass in something ive forgotten about, dang)
+$body.on("click", "#pButton", function () { 
 
-  // CHECK if its been assigned by a previous click or not:
+  // CHECK if the visitor var been assigned
+  // WAIT I gotta handle if the username gets changed too!
   if (typeof visitor === 'undefined') {
     // Assign the global visitor var to the value entered in unBox
     visitor = $("#unBox").val();
     // add username to the streams object
     streams.users[visitor] = [];
-  }
+  } // What do if the name wasnt undefined but was also changed?
+  else {}
 
-  // 1) Every time you make a visitor post, it posts the WHOLE saved Array
-  // 2) Its also not showing the newest post at the top
-  // If I can fix #1, #2 will prolly be fixed with it
+  // THIS takes the message written inside mBox, turns it into a string & assigns it to a var
   $urMSG = $("#mBox").val().toString();
   // Call writeTweet with the message as the argument argument
   writeTweet($urMSG);
 
-  // Clears the Tweet feed
-  // $tweetsDiv.html(''); 
-  // Not wanted because then it doesnt show other uses posts anymore
-
-  // Call futureFunc() to add the tweet to the div
+   // Call futureFunc() to add the new User tweet to the top of the div
   futureFunc(visitor);
 });
-// New tweets func end ------------------------------------------------
+// Visitor Creation tweets end ------------------------------------------------
 
 // CSS Start ----------------------------------------------------------
 // margin: auto; width: 50%; border: 3px solid green; padding: 10px;
