@@ -130,7 +130,7 @@ $(document).ready(() => {
       // Creates a div for each individual new tweet
       const $tweet = $('<div id="tweet" ></div>');
       // This CSS only works here, not at the bottom. BUT- 
-      $tweet.css({ "margin-bottom": "20px", "font-size": "20px" });
+      $tweet.css({ "margin-bottom": "20px", "font-size": "25px" });
       // const text = `@${tweet.user}: ${tweet.message}`; // OG: Combines username with the message into a String & assigns it to a var
       // Changed OG version to just the msg text, adding UN as a new div in front of this
       const text = `${tweet.message}`;
@@ -144,10 +144,11 @@ $(document).ready(() => {
       $unLink = $('<div id="nameClick" ></div>');
       // CSS only works here, not below. BUT
       $unLink.css({ "font-size": "15px" });
+      $unLink.append(':')
       // Set the UN text inside the 'div' tag
       $unLink.text(`@${tweet.user}`) // Adding : here broke a lot of code
       // Add the UN to the front of the tweet div
-      $tweet.prepend($unLink, ':');
+      $tweet.prepend($unLink);
       // Make Username Div End ----------------------------------
 
       // Timestamp Creation Start-------------------------
@@ -261,15 +262,15 @@ $(document).ready(() => {
 
   // CSS Start ----------------------------------------------------------
 // CSS wont work unless you affect them in the order theyre in in the code
-  $('body').css({ "width": "70%", "margin": "auto", "background-color": "#002244", "border-style": "dotted dashed solid double", "border-width": "20px", "border-color": "#00538C" })
-  $topDiv.css({ "width": "80%", "margin": "auto", "background-color": "white", "padding": "5%", "border-radius": "5px" });
-  $tweetsDiv.css({ "width": "80%", "margin": "auto", "background-color": "white", "padding": "5%", "border-radius": "5px", "text-align": "left", "font-family": "Arial", "font-size": "18px" })
-  $lButton.css({ "width": "50%", "margin-left": "25%" }).after("<br />")
+  $('body').css({ "width": "50%", "margin": "auto", "background-color": "#002244", "border-style": "dotted dashed solid double", "border-width": "20px", "border-color": "#00538C" })
+  $topDiv.css({ "width": "60%", "margin": "auto", "background-color": "white", "padding": "5%", "border-radius": "5px" });
+  $tweetsDiv.css({ "width": "60%", "margin": "auto", "background-color": "white", "padding": "5%", "border-radius": "5px", "text-align": "left", "font-family": "Arial", "font-size": "25px" })
+  $lButton.css({ "width": "50%", "margin-left": "25%", "margin-bottom": "5%" }).after("<br />")
   $nameBox.css({ "width": "90%", "margin": "auto" })
   $nbLabel.css({ "margin-left": "5%", "font-family": "Arial" }).after("<br />")
   $msgBox.css({ "width": "90%", "margin": "auto" })
   $msgLabel.css({ "margin-left": "5%", "font-family": "Arial" }).after("<br />")
-  $pButton.css({ "width": "50%", "margin-left": "25%" })
+  $pButton.css({ "width": "50%", "margin-left": "25%", "margin-top": "5%" })
   
   // These were causing console errors, why?
   // $unLink.css({ "font-size": "15px" });
